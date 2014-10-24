@@ -4,7 +4,20 @@ var path = require('path');
 
 var listeners = [],
 	idle = {},
+    idleSeconds = 0,
 	whenToCheck;
+
+if (/darwin/.test(process.platform)) {
+    var spawn = require('child_process').spawn;
+	var ls = spawn(__dirname + '/lib/idle.sh');
+
+    ls.stdout.on('data', function(data){
+		idleSeconds = parseInt(data, 10);
+	});
+    ls.on('close', function (code) {
+        console.log('child process exited with code ' + code);
+    });
+}
 
 
 idle.tick = function (callback) {
@@ -20,13 +33,7 @@ idle.tick = function (callback) {
 		});
 	}
 	else if (/darwin/.test(process.platform)) {
-		var cmd = '/usr/sbin/ioreg -c IOHIDSystem | /usr/bin/awk \'/HIDIdleTime/ {print int($NF/1000000000); exit}\'';
-		exec(cmd, function (error, stdout, stderr) {
-			if(error) {
-				throw stderr;
-			}
-			callback(parseInt(stdout, 10));
-		});
+		callback(idleSeconds);
 	}
 	else if (/linux/.test(process.platform)) {
 		var cmd = 'xprintidle';
