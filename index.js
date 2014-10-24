@@ -9,14 +9,12 @@ var listeners = [],
 
 if (/darwin/.test(process.platform)) {
     var spawn = require('child_process').spawn;
-	var ls = spawn(__dirname + '/lib/idle.sh');
+	var cmd = path.join( __dirname, 'bin', 'idle.sh');
+	var ls = spawn(cmd);
 
     ls.stdout.on('data', function(data){
-		idleSeconds = parseInt(data, 10);
+        idleSeconds = parseInt(data, 10);
 	});
-    ls.on('close', function (code) {
-        console.log('child process exited with code ' + code);
-    });
 }
 
 
@@ -24,7 +22,7 @@ idle.tick = function (callback) {
 	callback = callback || function (){};
 
 	if (/^win/.test(process.platform)) {
-		var cmd = path.join( __dirname, 'bin', 'idle.exe');
+	    var cmd = path.join( __dirname, 'bin', 'idle.exe');
 		exec(cmd, function (error, stdout, stderr) {
 			if(error) {
 				throw stderr;
