@@ -8,7 +8,7 @@ var listeners = [],
 	whenToCheck;
 
 if (/darwin/.test(process.platform)) {
-    var spawn = require('respawn');
+    var respawn = require('respawn');
 	var cmd = path.join( __dirname, 'bin', 'idle.sh');
 	var ls = respawn([cmd]);
 
