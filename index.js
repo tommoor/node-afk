@@ -8,13 +8,15 @@ var listeners = [],
 	whenToCheck;
 
 if (/darwin/.test(process.platform)) {
-    var spawn = require('child_process').spawn;
+    var spawn = require('respawn');
 	var cmd = path.join( __dirname, 'bin', 'idle.sh');
-	var ls = spawn(cmd);
+	var ls = respawn([cmd]);
 
     ls.stdout.on('data', function(data){
         idleSeconds = parseInt(data, 10);
 	});
+    
+    ls.start(); // spawn and watch
 }
 
 

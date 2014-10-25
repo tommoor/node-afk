@@ -17,7 +17,9 @@
     "type": "git",
     "url": "git://github.com/Teamwork/node-afk.git"
   },
-  "dependencies": {},
+  "dependencies": {
+    "respawn": "^0.4.2"
+  },
   "devDependencies": {},
   "main": "index.js"
 }
