@@ -12,7 +12,7 @@ if (/darwin/.test(process.platform)) {
 	var cmd = path.join( __dirname, 'bin', 'idle.sh');
 	var ls = respawn([cmd]);
 
-    ls.stdout.on('data', function(data){
+    ls.on('stdout', function(data){
         idleSeconds = parseInt(data, 10);
 	});
     
